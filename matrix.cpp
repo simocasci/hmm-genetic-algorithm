@@ -75,6 +75,8 @@ public:
             v[i] /= total;
         }
     }
+
+    ~Matrix() {}
 };
 
 #endif

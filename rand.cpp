@@ -30,6 +30,8 @@ public:
 
         return n - 1;
     }
+
+    ~Rand() {}
 };
 
 #endif

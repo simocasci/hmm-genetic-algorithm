@@ -9,8 +9,8 @@ int main()
     const int n_visible_states = 3;
     const int n_observations = 10;
     const int observation_length = 20;
-    const int population_size = 100;
-    const int n_iterations = 50;
+    const int population_size = 20;
+    const int n_iterations = 100;
     const double mutation_rate = 0.3;
     const double max_mutation = 0.1;
     const bool verbose = 1;
@@ -63,6 +63,9 @@ int main()
         observations[i] = obs;
     }
 
+    delete real_hmm.transition_probs;
+    delete real_hmm.emission_probs;
+
     std::cout << std::endl;
 
     std::cout << "Observations:" << std::endl;
@@ -89,4 +92,7 @@ int main()
 
     std::cout << "Evolved initial probabilities:" << std::endl;
     Log<double>::print(evolved_hmm.initial_probs);
+
+    delete evolved_hmm.transition_probs;
+    delete evolved_hmm.emission_probs;
 }

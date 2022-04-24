@@ -49,19 +49,6 @@ public:
         return crossed_matrix;
     }
 
-    static std::vector<Matrix<T> *> generate_random_matrix_population(const int &rows, const int &cols, const int &population_size)
-    {
-        std::vector<Matrix<T> *> random_population(population_size);
-
-        for (int i = 0; i < population_size; i++)
-        {
-            Matrix<T> *random_matrix = new Matrix<T>(rows, cols);
-            random_population[i] = random_matrix;
-        }
-
-        return random_population;
-    }
-
     static observation generate_observation(const HMM<double> &hmm, const int &observation_length, const int &n_visible_states)
     {
         observation obs(observation_length);
@@ -220,7 +207,10 @@ public:
                 {
                     if (scores[i] > best_score)
                     {
-                        best = population[i];
+                        best.initial_probs = population[i].initial_probs;
+                        best.transition_probs = population[i].transition_probs;
+                        best.emission_probs = population[i].emission_probs;
+
                         best_score = scores[i];
                     }
                 }
@@ -229,8 +219,20 @@ public:
             }
         }
 
+        for (int i = 0; i < population_size; i++)
+        {
+            HMM<T> hmm = population[i];
+            if (hmm.transition_probs != best.transition_probs && hmm.emission_probs != best.emission_probs)
+            {
+                delete hmm.transition_probs;
+                delete hmm.emission_probs;
+            }
+        }
+
         return best;
     }
+
+    ~Evolver() {}
 };
 
 #endif
